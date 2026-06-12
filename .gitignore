@@ -1,0 +1,4 @@
+.env
+vectors.jsonl
+*.test
+vendor
