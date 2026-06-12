@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -51,8 +52,10 @@ func (c *Client) EmbedBatch(ctx context.Context, texts []string) ([][]float32, e
 		}
 		lastErr = err
 		if !retryable {
+			log.Printf("[vectorize] embed failed (non-retryable): %v", err)
 			return nil, err
 		}
+		log.Printf("[vectorize] embed attempt %d/5 failed, will retry: %v", attempt+1, err)
 	}
 	return nil, fmt.Errorf("embed failed after retries: %w", lastErr)
 }
